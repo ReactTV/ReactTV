@@ -1,0 +1,22 @@
+{
+  "tagFormat": "${version}",
+  "branches": [
+    "main",
+    {
+      "name": "beta",
+      "prerelease": true
+    }
+  ],
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/github",
+    [
+      "@semantic-release/exec",
+      {
+        "prepareCmd": "make build version=${nextRelease.version}",
+        "publishCmd": "make push version=${nextRelease.version} username=$CONTAINER_REGISTRY_USERNAME password=$CONTAINER_REGISTRY_PASSWORD"
+      }
+    ]
+  ]
+}
