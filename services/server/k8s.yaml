@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: example
+  name: server
   labels:
-    app: example
+    app: server
 spec:
   selector:
     matchLabels:
-      app: example
+      app: server
   template:
     metadata:
       labels:
-        app: example
+        app: server
     spec:
       containers:
-        - name: example
-          image: example-image
+        - name: server
+          image: server-image
           ports:
             - containerPort: 8000

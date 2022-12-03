@@ -14,7 +14,7 @@
     [
       "@semantic-release/exec",
       {
-        "prepareCmd": "make build version=${nextRelease.version}",
+        "prepareCmd": "make build version=${nextRelease.version} commit=${nextRelease.gitHead}",
         "publishCmd": "make push version=${nextRelease.version} username=$CONTAINER_REGISTRY_USERNAME password=$CONTAINER_REGISTRY_PASSWORD"
       }
     ]
