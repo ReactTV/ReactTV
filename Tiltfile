@@ -26,19 +26,19 @@ helm_remote(
 k8s_resource('redis-master', port_forwards=[6379], labels=["databases"])
 
 
-# ------------ Example ------------
+# ------------ ReactTV-Server ------------
 docker_build_with_restart(
-    "example-image",
+    "server-image",
     context=".",
     target="dev",
-    dockerfile="services/example/Dockerfile",
-    entrypoint='/app/example',
+    dockerfile="services/server/Dockerfile",
+    entrypoint='/app/server',
     live_update=[
-        sync('services/example', '/app/services/example'),
-        run('go build -mod=vendor -o /app/example ./cmd/main.go'),
+        sync('services/server', '/app/services/server'),
+        run('go build -mod=vendor -o /app/server ./cmd/main.go'),
     ]
 )
 
-k8s_yaml(['services/example/k8s.yaml'])
+k8s_yaml(['services/server/k8s.yaml'])
 
-k8s_resource("example", port_forwards=8000, labels=["backend"])
+k8s_resource("server", port_forwards=8000, labels=["backend"])
