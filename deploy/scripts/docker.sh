@@ -12,12 +12,20 @@ registry=ghcr.io/reacttv
 # Run "docker build" against the services/* dirs.
 function build() {
     version=$1
+    commit=$2
+    time=$(date +%FT%T%z)
 
     cd $reacttv_base
     for service in "${services[@]}"; do
         service_image_name=$registry/$(basename $service):$version
         echo "docker build: $service_image_name"
-        docker build -f $service/Dockerfile . -t $service_image_name --build-arg VERSION="itworks" --target prod
+        docker build \
+            -f $service/Dockerfile . \
+            -t $service_image_name \
+            --build-arg VERSION=$version \
+            --build-arg GITCOMMIT=$commit \
+            --build-arg DATE=$time \
+            --target prod
     done
 }
 

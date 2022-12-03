@@ -11,8 +11,8 @@ version: ## Version prints out the next semantic version
 login: ## Authenticates with Docker Registry (example: make login username=$DOCKER_USER password=$DOCKER_PASSWORD)
 	@echo "Authenticating with docker registry (ghcr.io)..." ; docker login ghcr.io --username $(username) --password $(password)
 
-build: ## Builds all services with a tagged version (example: make build version=v1.0.0)
-	@cd deploy/scripts ; source docker.sh ; build $(version)
+build: ## Builds all services with a tagged version (example: make build version=v1.0.0 commit=`git rev-parse HEAD` )
+	@cd deploy/scripts ; source docker.sh ; build $(version) $(commit)
 
 push: login ## Push all services with a tagged version (example: make build version=v1.0.0 username=$DOCKER_USER password=$DOCKER_PASSWORD)
 	@cd deploy/scripts ; source docker.sh ; push $(version)
