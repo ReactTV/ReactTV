@@ -1,3 +1,30 @@
+# ---------- DEV BUILD -------------------
+
+ARG ALPINE_VERSION=3.15.4
+ARG GOLANG_VERSION=1.18
+
+FROM golang:$GOLANG_VERSION as dev
+
+ENV CGO_ENABLED=0
+ENV GOOS=linux
+ENV GOPROXY=https://proxy.golang.org,direct
+
+ARG VERSION
+ARG ServiceDir=services/example
+
+RUN mkdir -p /app
+WORKDIR /app
+
+COPY $ServiceDir $ServiceDir
+
+WORKDIR $ServiceDir
+
+RUN go mod vendor
+
+RUN IMAGE_VERSION=$VERSION && go build -mod=vendor -o /app/example ./cmd/main.go
+
+# ---------- PRODUCTION BUILD -------------------
+
 ARG ALPINE_VERSION=3.15.4
 ARG GOLANG_VERSION=1.18
 
@@ -19,7 +46,7 @@ WORKDIR $ServiceDir
 
 RUN go mod vendor
 
-RUN go build -ldflags="-X example/version.Version=$VERSION" -o /app/example ./cmd/main.go
+RUN IMAGE_VERSION=$VERSION && go build -ldflags="-X example.Version=$IMAGE_VERSION" -o /app/example ./cmd/main.go
 
 FROM alpine:$ALPINE_VERSION as prod
 
