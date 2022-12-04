@@ -21,6 +21,7 @@ const VideoPlayer = ({ playlistUrls }: TVideoPlayerProps) => {
       <VideoEmbed url={currentUrl} />
       <VideoPlaylist
         playlistUrls={playlistUrls}
+        currentUrl={currentUrl}
         onPlaylistClick={onChangeVideo}
       />
     </div>
