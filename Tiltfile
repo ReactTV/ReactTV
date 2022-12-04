@@ -42,3 +42,30 @@ docker_build_with_restart(
 k8s_yaml(['services/server/k8s.yaml'])
 
 k8s_resource("server", port_forwards=8000, labels=["backend"])
+
+# ------------ ReactTV-Frontend ------------
+docker_build(
+    "frontend",
+    context="./services/frontend",
+    live_update=[
+        sync('services/frontend', '/usr/src/app')
+    ]
+)
+
+k8s_resource("frontend", port_forwards="3000", labels=["frontend"])
+
+k8s_yaml(['services/frontend/k8s.yaml'])
+
+# ------------ ReactTV-Frontend-Storybook ------------
+docker_build(
+    "storybook",
+    context="./services/frontend",
+    dockerfile="./services/frontend/DockerfileStorybook",
+    live_update=[
+        sync('services/frontend', '/usr/src/app')
+    ]
+)
+
+k8s_resource("storybook", port_forwards="6006", labels=["frontend"])
+
+k8s_yaml(['services/frontend/k8sStorybook.yaml'])

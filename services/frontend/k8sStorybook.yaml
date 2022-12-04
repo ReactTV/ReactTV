@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: storybook
+  labels:
+    app: storybook
+spec:
+  selector:
+    matchLabels:
+      app: storybook
+  template:
+    metadata:
+      labels:
+        app: storybook
+        tier: web
+    spec:
+      containers:
+        - name: storybook
+          image: storybook
+          ports:
+            - containerPort: 6006
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: storybook
+  labels:
+    app: storybook
+spec:
+  ports:
+    - port: 80
+      targetPort: 6006
+      protocol: TCP
+  selector:
+    app: storybook
