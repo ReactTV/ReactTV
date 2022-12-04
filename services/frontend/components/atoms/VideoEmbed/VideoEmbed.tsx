@@ -9,7 +9,7 @@ export type TVideoEmbedProps = {
 const VideoEmbed = ({ url }: TVideoEmbedProps) => {
   return (
     <div className={styles.videoEmbed}>
-      <ReactPlayer url={url} controls pip />
+      <ReactPlayer url={url} playing controls pip />
     </div>
   );
 };

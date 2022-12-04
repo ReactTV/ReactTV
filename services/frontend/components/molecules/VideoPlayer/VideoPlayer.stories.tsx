@@ -4,7 +4,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react";
 import VideoPlayer from "./VideoPlayer";
 
 export default {
-  title: "Atoms/VideoPlayer",
+  title: "Molecules/VideoPlayer",
   component: VideoPlayer,
   args: {
     playlistUrls: [
