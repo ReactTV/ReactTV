@@ -55,3 +55,17 @@ docker_build(
 k8s_resource("frontend", port_forwards="3000", labels=["frontend"])
 
 k8s_yaml(['services/frontend/k8s.yaml'])
+
+# ------------ ReactTV-Frontend-Storybook ------------
+docker_build(
+    "frontend-storybook",
+    context="./services/frontend",
+    dockerfile="./services/frontend/DockerfileStorybook",
+    live_update=[
+        sync('services/frontend', '/usr/src/app')
+    ]
+)
+
+k8s_resource("frontend-storybook", port_forwards="6006", labels=["frontend"])
+
+k8s_yaml(['services/frontend/k8sStorybook.yaml'])
