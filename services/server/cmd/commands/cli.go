@@ -1,7 +1,7 @@
 package commands
 
 const (
-	Name = "reacttv-server"
+	Name = "server"
 )
 
 type Globals struct {

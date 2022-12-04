@@ -32,7 +32,7 @@ docker_build_with_restart(
     context=".",
     target="dev",
     dockerfile="services/server/Dockerfile",
-    entrypoint='/app/server',
+    entrypoint='/app/server server',
     live_update=[
         sync('services/server', '/app/services/server'),
         run('go build -mod=vendor -o /app/server ./cmd/main.go'),

@@ -15,6 +15,19 @@ spec:
     spec:
       containers:
         - name: server
+          command:
+            - "/bin/sh"
+            - "-c"
+            - "/app/server server"
           image: server-image
           ports:
             - containerPort: 8000
+          env:
+            - name: DB_HOST
+              value: postgresql
+            - name: DB_USER
+              value: postgres
+            - name: DB_PASSWORD
+              value: LzCuZLYrNa1d2kt9rl21ZvNJPSG
+            - name: DB_NAME
+              value: postgres
