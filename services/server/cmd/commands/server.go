@@ -1,23 +1,54 @@
 package commands
 
 import (
-	log "github.com/sirupsen/logrus"
+	"fmt"
+	"server/pkg/models"
+	"server/pkg/server"
+
+	"github.com/sirupsen/logrus"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 type Server struct {
-	DBHost     string `required help:"Postgres hostname or IP address"`
-	DBUser     string `required help:"Postgres username"`
-	DBPassword string `required help"Postgres password"`
-	DBName     string `required help"Postgres database name"`
-	Port       string `required help:"Port the server listens on"`
+	Port       string `required help:"Port the server listens on" default:"8000"`
+	DBHost     string `required env:"DB_HOST" help:"Postgres hostname or IP address"`
+	DBUser     string `required env:"DB_USER" help:"Postgres username"`
+	DBPassword string `required env:"DB_PASSWORD" help"Postgres password"`
+	DBName     string `required env:"DB_NAME" help"Postgres database name"`
 }
 
-func (s *Server) Run(globals *Globals) error {
-	l := log.New()
-	lvl, err := log.ParseLevel(globals.LogLevel)
+func (flag *Server) Run(globals *Globals) error {
+	// Setup logger
+	logger := logrus.New()
+	lvl, err := logrus.ParseLevel(globals.LogLevel)
 	if err != nil {
-		l.Fatal(err)
+		logger.Fatal(err)
 	}
-	l.SetLevel(lvl)
+	logger.SetLevel(lvl)
+
+	switch globals.LogFormat {
+	case "text":
+		logger.SetFormatter(&logrus.TextFormatter{})
+	case "json":
+		logger.SetFormatter(&logrus.JSONFormatter{})
+	}
+
+	dburl := fmt.Sprintf("postgresql://%v:%v@%v/%v", flag.DBUser, flag.DBPassword, flag.DBHost, flag.DBName)
+	db, err := gorm.Open(postgres.Open(dburl))
+	if err != nil {
+		return err
+	}
+	logger.Info("Migrating User Model...")
+	err = db.AutoMigrate(&models.User{})
+	if err != nil {
+		return err
+	}
+
+	s := server.NewServer(logger, flag.Port, db)
+	err = s.Serve()
+	if err != nil {
+		return err
+	}
 	return nil
 }

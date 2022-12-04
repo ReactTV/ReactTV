@@ -22,6 +22,8 @@ RUN go mod vendor
 
 RUN go build -mod=vendor -o /app/server ./cmd/main.go
 
+CMD ["/app/server", "server"]
+
 # ---------- PRODUCTION BUILD -------------------
 
 ARG ALPINE_VERSION=3.15.4
