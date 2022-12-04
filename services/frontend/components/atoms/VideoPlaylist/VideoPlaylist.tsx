@@ -1,13 +1,14 @@
 import styles from "./VideoPlaylist.module.css";
 
 export type TVideoPlaylistProps = {
-  url: string | string[];
+  playlistUrls: string[];
   onPlaylistClick: (url: string) => void;
 };
 
-const VideoPlaylist = ({ url, onPlaylistClick }: TVideoPlaylistProps) => {
-  const playlistUrls: string[] = Array.isArray(url) ? url : [url];
-
+const VideoPlaylist = ({
+  playlistUrls,
+  onPlaylistClick,
+}: TVideoPlaylistProps) => {
   return (
     <div className={styles.videoPlaylist}>
       {playlistUrls.map((url, index) => (

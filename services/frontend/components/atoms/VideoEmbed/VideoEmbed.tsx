@@ -3,7 +3,7 @@ import ReactPlayer from "react-player";
 import styles from "./VideoEmbed.module.css";
 
 export type TVideoEmbedProps = {
-  url: string | string[];
+  url: string;
 };
 
 const VideoEmbed = ({ url }: TVideoEmbedProps) => {

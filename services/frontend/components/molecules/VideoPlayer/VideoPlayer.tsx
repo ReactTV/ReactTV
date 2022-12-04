@@ -6,12 +6,10 @@ import VideoPlaylist from "../../atoms/VideoPlaylist";
 import styles from "./VideoPlayer.module.css";
 
 export type TVideoPlayerProps = {
-  url: string | string[];
+  playlistUrls: string[];
 };
 
-const VideoPlayer = ({ url }: TVideoPlayerProps) => {
-  const playlistUrls: string[] = Array.isArray(url) ? url : [url];
-
+const VideoPlayer = ({ playlistUrls }: TVideoPlayerProps) => {
   const [currentUrl, setCurrentUrl] = useState(playlistUrls[0]);
 
   const onChangeVideo = (nextUrl: string) => {
@@ -21,7 +19,10 @@ const VideoPlayer = ({ url }: TVideoPlayerProps) => {
   return (
     <div className={styles.videoPlayer}>
       <VideoEmbed url={currentUrl} />
-      <VideoPlaylist url={playlistUrls} onPlaylistClick={onChangeVideo} />
+      <VideoPlaylist
+        playlistUrls={playlistUrls}
+        onPlaylistClick={onChangeVideo}
+      />
     </div>
   );
 };

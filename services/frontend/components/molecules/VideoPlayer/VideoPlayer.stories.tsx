@@ -7,7 +7,7 @@ export default {
   title: "Atoms/VideoPlayer",
   component: VideoPlayer,
   args: {
-    url: [
+    playlistUrls: [
       "https://www.youtube.com/watch?v=4c52GsNrJ_E",
       "https://www.dailymotion.com/video/x8ebz36",
       "https://www.twitch.tv/willneff",
