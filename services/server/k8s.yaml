@@ -31,3 +31,5 @@ spec:
               value: LzCuZLYrNa1d2kt9rl21ZvNJPSG
             - name: DB_NAME
               value: postgres
+            - name: JWT_SECRET_KEY
+              value: some-random-local-de-secret-key

@@ -29,6 +29,9 @@ func (s *server) Serve() error {
 	e.HideBanner = true
 	e.HidePort = true
 
+	// Setup custom validator for performing data validation on request payload
+	e.Validator = &CustomValidator{}
+
 	// Middlewares
 	e.Use(middleware.Recover())
 	e.Use(middleware.RequestLoggerWithConfig(middleware.RequestLoggerConfig{
@@ -47,7 +50,7 @@ func (s *server) Serve() error {
 	}))
 
 	// Initialize Routes
-	s.InitializeRoutes(e)
+	s.InitializeUserRoutes(e)
 
 	// Starting Server
 	s.Log.WithField("port", s.Port).Info("Starting HTTP Server...")

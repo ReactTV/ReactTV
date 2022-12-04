@@ -29,8 +29,6 @@ type User struct {
 	Base
 	Username     string
 	Password     string
-	CreatedAt    time.Time
-	UpdatedAt    time.Time
 	Role         string
 	Token        string
 	RefreshToken string
