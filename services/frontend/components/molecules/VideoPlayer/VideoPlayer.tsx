@@ -1,15 +1,15 @@
-import ReactPlayer from "react-player";
+import VideoEmbed from "../../atoms/VideoEmbed";
 
 import styles from "./VideoPlayer.module.css";
 
 export type TVideoPlayerProps = {
-  url: string;
+  url: string | string[];
 };
 
 const VideoPlayer = ({ url }: TVideoPlayerProps) => {
   return (
-    <div className={styles.VideoPlayer}>
-      <ReactPlayer url={url} />
+    <div className={styles.videoPlayer}>
+      <VideoEmbed url={url} />
     </div>
   );
 };

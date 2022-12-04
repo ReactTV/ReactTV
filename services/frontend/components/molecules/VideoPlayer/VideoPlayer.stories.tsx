@@ -7,7 +7,7 @@ export default {
   title: "Atoms/VideoPlayer",
   component: VideoPlayer,
   args: {
-    url: "https://www.youtube.com/watch?v=ysz5S6PUM-U",
+    url: "https://www.twitch.tv/willneff",
   },
 } as ComponentMeta<typeof VideoPlayer>;
 
