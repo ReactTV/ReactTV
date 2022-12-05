@@ -1,0 +1,36 @@
+.videoPlaylistItem {
+  display: flex;
+  box-sizing: border-box;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.videoPlaylistItem:hover {
+  background: #ccc;
+}
+
+.isActive {
+  background: #eee;
+}
+
+.image {
+  margin-right: 5px;
+}
+
+.videoPlaylistItem + .videoPlaylistItem {
+  border-top: 1px solid black;
+}
+
+.textWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 16px;
+}
+
+.sitename {
+  font-size: 12px;
+}

@@ -1,15 +1,15 @@
-import ReactPlayer from "react-player";
+import ReactPlayer, { ReactPlayerProps } from "react-player";
 
 import styles from "./VideoEmbed.module.css";
 
-export type TVideoEmbedProps = {
+export type TVideoEmbedProps = ReactPlayerProps & {
   url: string;
 };
 
-const VideoEmbed = ({ url }: TVideoEmbedProps) => {
+const VideoEmbed = ({ url, ...otherProps }: TVideoEmbedProps) => {
   return (
     <div className={styles.videoEmbed}>
-      <ReactPlayer url={url} playing controls pip />
+      <ReactPlayer url={url} playing controls pip {...otherProps} />
     </div>
   );
 };

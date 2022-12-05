@@ -1,3 +1,5 @@
 .videoPlaylist {
   background: #aaaaaa;
+  overflow: auto;
+  height: 100%;
 }

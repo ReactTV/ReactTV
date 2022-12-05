@@ -16,11 +16,18 @@ const VideoPlayer = ({ playlistUrls }: TVideoPlayerProps) => {
     setCurrentUrl(nextUrl);
   };
 
+  const nextVideo = () => {
+    const currentIndex = playlistUrls.indexOf(currentUrl);
+    const nextUrl = playlistUrls[currentIndex + 1] || playlistUrls[0];
+    setCurrentUrl(nextUrl);
+  };
+
   return (
     <div className={styles.videoPlayer}>
-      <VideoEmbed url={currentUrl} />
+      <VideoEmbed url={currentUrl} onEnded={nextVideo} />
       <VideoPlaylist
         playlistUrls={playlistUrls}
+        currentUrl={currentUrl}
         onPlaylistClick={onChangeVideo}
       />
     </div>
