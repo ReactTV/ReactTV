@@ -1,4 +1,7 @@
 /** @type {import('next').NextConfig} */
+
+const IMAGE_DOMAINS = [];
+
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
