@@ -22,6 +22,9 @@ const VideoPlaylistItem = ({
     if (metadata) return;
 
     parser(url).then((result) => {
+      console.log("result is", url, result);
+      if (!result) return;
+
       setMetadata(result.og);
     });
   });

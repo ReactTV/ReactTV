@@ -1464,6 +1464,14 @@
   resolved "https://registry.yarnpkg.com/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-13.0.6.tgz#dfa28ddb335c16233d22cf39ec8cdf723e6587a1"
   integrity sha512-pSkqZ//UP/f2sS9T7IvHLfEWDPTX0vRyXJnAUNisKvO3eF3e1xdhDX7dix/X3Z3lnN4UjSwOzclAI87JFbOwmQ==
 
+"@ngneat/falso@^6.2.0":
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/@ngneat/falso/-/falso-6.2.0.tgz#bceb55df81c45168c5189d9e2b12c45435a34e9d"
+  integrity sha512-TNoLCjsWp0DqhrnvdFTAbVo7zqT0VhoxVrhRDFBnB0opGaSQLXOj8fteZKi8SBMfB6VrqIQtK7LZa7Zs7N6IkQ==
+  dependencies:
+    seedrandom "3.0.5"
+    uuid "8.3.2"
+
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz#7619c2eb21b25483f6d167548b4cfd5a7488c3d5"
@@ -2701,6 +2709,11 @@
     "@types/prop-types" "*"
     "@types/scheduler" "*"
     csstype "^3.0.2"
+
+"@types/rosie@^0.0.40":
+  version "0.0.40"
+  resolved "https://registry.yarnpkg.com/@types/rosie/-/rosie-0.0.40.tgz#3fe51a3ac08d2f1a335999e74ee7b8743610ab11"
+  integrity sha512-Snog8oO88AXDhFG1BHPkKSg2urcGhyA+/fqQUuc4Abejt+HHrc2VszujyJGVBlN6DD8Gnp3PV5rogs3uYt/ZOA==
 
 "@types/scheduler@*":
   version "0.16.2"
@@ -9389,6 +9402,11 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
+rosie@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/rosie/-/rosie-2.1.0.tgz#0213a9d2b0401a2549cbce5f1cd914caffa22358"
+  integrity sha512-Dbzdc+prLXZuB/suRptDnBUY29SdGvND3bLg6cll8n7PNqzuyCxSlRfrkn8PqjS9n4QVsiM7RCvxCkKAkTQRjA==
+
 rsvp@^4.8.4:
   version "4.8.5"
   resolved "https://registry.yarnpkg.com/rsvp/-/rsvp-4.8.5.tgz#c8f155311d167f68f21e168df71ec5b083113734"
@@ -9509,6 +9527,11 @@ schema-utils@^3.0.0, schema-utils@^3.1.0, schema-utils@^3.1.1:
     "@types/json-schema" "^7.0.8"
     ajv "^6.12.5"
     ajv-keywords "^3.5.2"
+
+seedrandom@3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/seedrandom/-/seedrandom-3.0.5.tgz#54edc85c95222525b0c7a6f6b3543d8e0b3aa0a7"
+  integrity sha512-8OwmbklUNzwezjGInmZ+2clQmExQPvomqjL7LFqOYqtmuxRgQYqOD3mHaU+MvZn5FLUeVxVfQjwLZW/n/JFuqg==
 
 "semver@2 || 3 || 4 || 5", semver@^5.4.1, semver@^5.5.0, semver@^5.6.0:
   version "5.7.1"
@@ -10691,6 +10714,11 @@ uuid-browser@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/uuid-browser/-/uuid-browser-3.1.0.tgz#0f05a40aef74f9e5951e20efbf44b11871e56410"
   integrity sha512-dsNgbLaTrd6l3MMxTtouOCFw4CBFc/3a+GgYA2YyrJvyQ1u6q4pcu3ktLoUZ/VN/Aw9WsauazbgsgdfVWgAKQg==
+
+uuid@8.3.2:
+  version "8.3.2"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
+  integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
 
 uuid@^3.3.2:
   version "3.4.0"
