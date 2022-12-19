@@ -21,14 +21,14 @@ spec:
             - "/app/server server"
           image: server-image
           ports:
-            - containerPort: 8000
+            - containerPort: {{ .Values.server.port }}
           env:
             - name: DB_HOST
-              value: postgresql
+              value: {{ .Values.postgresql.fullnameOverride }}
             - name: DB_USER
-              value: postgres
+              value: {{ .Values.postgresql.auth.username }}
             - name: DB_PASSWORD
-              value: LzCuZLYrNa1d2kt9rl21ZvNJPSG
+              value: {{ .Values.postgresql.auth.password }}
             - name: DB_NAME
               value: postgres
             - name: JWT_SECRET_KEY

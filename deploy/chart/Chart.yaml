@@ -1,0 +1,15 @@
+apiVersion: v2
+name: ReactTV
+description: A Helm chart for ReactTV
+type: application
+version: 0.1.0
+appVersion: "1.16.0"
+
+dependencies:
+  - name: postgresql
+    repository: "https://charts.bitnami.com/bitnami"
+    version: 12.0.0
+
+  - name: redis
+    repository: "https://charts.bitnami.com/bitnami"
+    version: 17.3.17
