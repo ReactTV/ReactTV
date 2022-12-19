@@ -1,32 +1,55 @@
+# ------------ Tilt Settings ------------
 version_settings(constraint='>=0.30.0')
 load('ext://restart_process', 'docker_build_with_restart')
-load('ext://helm_remote', 'helm_remote')
 
 
-# ------------ PostgreSQL ------------
-postgres_password = 'LzCuZLYrNa1d2kt9rl21ZvNJPSG'
+# ------------ Service Variables ------------
 
-helm_remote(
-  'postgresql',
-  repo_url='https://charts.bitnami.com/bitnami',
-  set=["auth.postgresPassword=" + postgres_password]
-)
+# PostgresSQL
+postgres_port="5432"
+postgres_password="LzCuZLYrNa1d2kt9rl21ZvNJPSG"
 
-k8s_resource('postgresql', port_forwards=[5432], labels=["databases"])
-
-# ------------ Redis ------------
-redis_password = '1RNulEjFTC4q730yowi52GobJOa'
-
-helm_remote(
-  'redis',
-  repo_url='https://charts.bitnami.com/bitnami',
-  set=["auth.password	=" + redis_password, "architecture=standalone"]
-)
-
-k8s_resource('redis-master', port_forwards=[6379], labels=["databases"])
+# Redis
+redis_port="6379"
+redis_password="LzCuZLYrNa1d2kt9rl21ZvNJPSG"
 
 
-# ------------ ReactTV-Server ------------
+# ReactTV/Server
+server_port="8000"
+
+# ReactTV/Frontend
+frontend_port="3000"
+frontend_storybook_port="6006"
+
+
+# ------------ Helm Deploy ------------
+
+reacttv_helm_dir="./deploy/chart"
+reacttv_helm = helm(
+  reacttv_helm_dir,
+  name='reacttv-dev',
+  set=[
+    'server.port='+server_port,
+    'frontend.port='+frontend_port,
+    'frontend.storybook.port='+frontend_storybook_port,
+    'postgresql.auth.password='+postgres_password,
+    'redis.auth.password='+redis_password,
+  ],
+  )
+
+k8s_yaml(reacttv_helm, allow_duplicates=True)
+
+
+# ------------ Service Port-Forwards ------------
+k8s_resource('postgresql', port_forwards=[postgres_port], labels=["databases"])
+k8s_resource('redis-master', port_forwards=[redis_port], labels=["databases"])
+k8s_resource("server", port_forwards=server_port, labels=["backend"])
+k8s_resource("frontend", port_forwards=frontend_port, labels=["frontend"])
+k8s_resource("storybook", port_forwards=frontend_storybook_port, labels=["frontend"])
+
+
+# ------------ Docker Builds ------------
+
 docker_build_with_restart(
     "server-image",
     context=".",
@@ -39,11 +62,6 @@ docker_build_with_restart(
     ]
 )
 
-k8s_yaml(['services/server/k8s.yaml'])
-
-k8s_resource("server", port_forwards=8000, labels=["backend"])
-
-# ------------ ReactTV-Frontend ------------
 docker_build(
     "frontend",
     context="./services/frontend",
@@ -52,11 +70,6 @@ docker_build(
     ]
 )
 
-k8s_resource("frontend", port_forwards="3000", labels=["frontend"])
-
-k8s_yaml(['services/frontend/k8s.yaml'])
-
-# ------------ ReactTV-Frontend-Storybook ------------
 docker_build(
     "storybook",
     context="./services/frontend",
@@ -65,7 +78,3 @@ docker_build(
         sync('services/frontend', '/usr/src/app')
     ]
 )
-
-k8s_resource("storybook", port_forwards="6006", labels=["frontend"])
-
-k8s_yaml(['services/frontend/k8sStorybook.yaml'])

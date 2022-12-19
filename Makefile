@@ -16,3 +16,6 @@ build: ## Builds all services with a tagged version (example: make build version
 
 push: login ## Push all services with a tagged version (example: make build version=v1.0.0 username=$DOCKER_USER password=$DOCKER_PASSWORD)
 	@cd deploy/scripts ; source docker.sh ; push $(version)
+
+dev: ## Run ReactTV in Development Mode
+	@tilt up
