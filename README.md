@@ -11,5 +11,5 @@ Follow the below guids to get setup...
 ### Start Local Dev
 
 ```sh
-tilt up
+mak dev
 ```
