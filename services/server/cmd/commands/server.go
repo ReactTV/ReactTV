@@ -12,11 +12,12 @@ import (
 )
 
 type Server struct {
-	Port       string `required help:"Port the server listens on" default:"8000"`
-	DBHost     string `required env:"DB_HOST" help:"Postgres hostname or IP address"`
-	DBUser     string `required env:"DB_USER" help:"Postgres username"`
-	DBPassword string `required env:"DB_PASSWORD" help"Postgres password"`
-	DBName     string `required env:"DB_NAME" help"Postgres database name"`
+	Port          string `required help:"Port the server listens on" default:"8000"`
+	DBHost        string `required env:"DB_HOST" help:"Postgres hostname or IP address"`
+	DBUser        string `required env:"DB_USER" help:"Postgres username"`
+	DBPassword    string `required env:"DB_PASSWORD" help"Postgres password"`
+	DBName        string `required env:"DB_NAME" help"Postgres database name"`
+	DBDefaultName string `required env:"DB_NAME_POSTGRES" help"The default Postgres database name (usually 'postgres')"`
 }
 
 func (flag *Server) Run(globals *Globals) error {
@@ -35,12 +36,21 @@ func (flag *Server) Run(globals *Globals) error {
 		logger.SetFormatter(&logrus.JSONFormatter{})
 	}
 
-	dburl := fmt.Sprintf("postgresql://%v:%v@%v/%v", flag.DBUser, flag.DBPassword, flag.DBHost, flag.DBName)
-	db, err := database.New(dburl, logger)
+	// Create database (reacttv) if it doesn't exist
+	default_dsn := fmt.Sprintf("postgresql://%v:%v@%v/%v", flag.DBUser, flag.DBPassword, flag.DBHost, flag.DBDefaultName)
+	err = database.Create(default_dsn, flag.DBName, logger)
 	if err != nil {
 		return err
 	}
 
+	// Connect to racttv database
+	reacttv_dsn := fmt.Sprintf("postgresql://%v:%v@%v/%v", flag.DBUser, flag.DBPassword, flag.DBHost, flag.DBName)
+	db, err := database.New(reacttv_dsn, logger)
+	if err != nil {
+		return err
+	}
+
+	// Migrate tables in reacttv database
 	err = db.Migrate()
 	if err != nil {
 		return err
