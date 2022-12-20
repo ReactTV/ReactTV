@@ -2,12 +2,13 @@ package commands
 
 import (
 	"fmt"
-	"server/pkg/models"
-	"server/pkg/server"
+	"server/pkg/api"
+	"server/pkg/api/router"
+	"server/pkg/channel"
+	"server/pkg/database"
+	"server/pkg/user"
 
 	"github.com/sirupsen/logrus"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
 )
 
 type Server struct {
@@ -35,17 +36,26 @@ func (flag *Server) Run(globals *Globals) error {
 	}
 
 	dburl := fmt.Sprintf("postgresql://%v:%v@%v/%v", flag.DBUser, flag.DBPassword, flag.DBHost, flag.DBName)
-	db, err := gorm.Open(postgres.Open(dburl))
-	if err != nil {
-		return err
-	}
-	logger.Info("Migrating User Model...")
-	err = db.AutoMigrate(&models.User{})
+	db, err := database.New(dburl, logger)
 	if err != nil {
 		return err
 	}
 
-	s := server.NewServer(logger, flag.Port, db)
+	err = db.Migrate()
+	if err != nil {
+		return err
+	}
+
+	// Controllers
+	uc := user.NewUserController(db, logger)
+	cc := channel.NewChannelController(db, logger)
+
+	// Router / Handlers
+	r := router.NewRouter(logger, uc, cc)
+
+	// API Server
+	s := api.NewServer(logger, flag.Port, r)
+
 	err = s.Serve()
 	if err != nil {
 		return err

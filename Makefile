@@ -19,3 +19,6 @@ push: login ## Push all services with a tagged version (example: make build vers
 
 dev: ## Run ReactTV in Development Mode
 	@tilt up
+
+api-docs: ## Generate API documentation for ReactTV/Server
+	@cd services/server/pkg/api && swag init -g api.go --parseDependency true

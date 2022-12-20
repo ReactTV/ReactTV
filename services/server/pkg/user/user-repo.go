@@ -2,6 +2,7 @@ package user
 
 import (
 	"errors"
+	"server/pkg/database"
 	"server/pkg/models"
 
 	"github.com/google/uuid"
@@ -10,17 +11,17 @@ import (
 )
 
 type UserRepository struct {
-	db  *gorm.DB
+	db  *database.Postgres
 	log *logrus.Logger
 }
 
-func NewUserRepository(db *gorm.DB, l *logrus.Logger) *UserRepository {
+func NewUserRepository(db *database.Postgres, l *logrus.Logger) *UserRepository {
 	return &UserRepository{db: db, log: l}
 }
 
 func (u *UserRepository) FindUserByUsername(username string) (models.User, error) {
 	var user models.User
-	result := u.db.First(&user, "username = ?", username)
+	result := u.db.Conn.First(&user, "username = ?", username)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return user, gorm.ErrRecordNotFound
@@ -33,7 +34,7 @@ func (u *UserRepository) FindUserByUsername(username string) (models.User, error
 
 func (u *UserRepository) UpdateUserAuthByID(token string, refreshToken string, id uuid.UUID) (models.User, error) {
 	var user models.User
-	result := u.db.First(&user, "id = ?", id)
+	result := u.db.Conn.First(&user, "id = ?", id)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return user, gorm.ErrRecordNotFound
@@ -45,7 +46,7 @@ func (u *UserRepository) UpdateUserAuthByID(token string, refreshToken string, i
 	user.Token = token
 	user.RefreshToken = refreshToken
 
-	tx := u.db.Save(&user)
+	tx := u.db.Conn.Save(&user)
 	if tx.RowsAffected != 1 {
 		return user, errors.New("error occurred while updating user")
 	}
@@ -53,7 +54,7 @@ func (u *UserRepository) UpdateUserAuthByID(token string, refreshToken string, i
 }
 
 func (ur *UserRepository) CreateUser(user models.User) (models.User, error) {
-	result := ur.db.FirstOrCreate(&user)
+	result := ur.db.Conn.FirstOrCreate(&user)
 	if result.Error != nil {
 		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 			return user, gorm.ErrRecordNotFound
