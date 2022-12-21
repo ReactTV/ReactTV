@@ -1,10 +1,19 @@
-package server
+package user
 
 import (
 	"net/http"
+	"server/pkg/user"
 
 	"github.com/labstack/echo/v4"
 )
+
+type Handler struct {
+	user *user.UserController
+}
+
+func NewHandler(uc *user.UserController) *Handler {
+	return &Handler{user: uc}
+}
 
 type loginRequest struct {
 	Username string `json:"username" validate:"required"`
@@ -17,7 +26,15 @@ type loginResponse struct {
 	RefreshToken string `json:"refresh_token"`
 }
 
-func (s *server) Login(c echo.Context) error {
+// Login godoc
+//
+//	@Summary		Logs a user in
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body loginRequest true "Login Request"
+//	@Success		200	{object}	loginResponse
+//	@Router			/user/login [post]
+func (a *Handler) Login(c echo.Context) error {
 	req := loginRequest{}
 	err := c.Bind(&req)
 	if err != nil {
@@ -28,7 +45,7 @@ func (s *server) Login(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, err)
 	}
 
-	user, err := s.UserController.Login(req.Username, req.Password)
+	user, err := a.user.Login(req.Username, req.Password)
 	if err != nil {
 		return err
 	}
@@ -53,7 +70,15 @@ type signupResponse struct {
 	RefreshToken string `json:"refresh_token"`
 }
 
-func (s *server) Signup(c echo.Context) error {
+// Signup godoc
+//
+//	@Summary		Create a user
+//	@Accept			json
+//	@Produce		json
+//	@Param			request	body signupRequest true "Signup Request"
+//	@Success		200	{object} signupResponse
+//	@Router			/user/signup [post]
+func (a *Handler) Signup(c echo.Context) error {
 	req := signupRequest{}
 	err := c.Bind(&req)
 	if err != nil {
@@ -64,7 +89,7 @@ func (s *server) Signup(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, err)
 	}
 
-	user, err := s.UserController.Signup(req.Username, req.Password)
+	user, err := a.user.Signup(req.Username, req.Password)
 	if err != nil {
 		return err
 	}

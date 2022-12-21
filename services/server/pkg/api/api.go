@@ -1,26 +1,26 @@
-package server
+package api
 
 import (
 	"fmt"
-	"server/pkg/user"
+	"server/pkg/api/router"
+	"server/pkg/api/utils"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/sirupsen/logrus"
-	"gorm.io/gorm"
 )
 
 type server struct {
-	Log            *logrus.Logger
-	Port           string
-	UserController *user.UserController
+	port   string
+	log    *logrus.Logger
+	router *router.Router
 }
 
-func NewServer(l *logrus.Logger, port string, db *gorm.DB) *server {
+func NewServer(l *logrus.Logger, port string, r *router.Router) *server {
 	return &server{
-		Log:            l,
-		Port:           port,
-		UserController: user.NewUserController(db, l),
+		log:    l,
+		port:   port,
+		router: r,
 	}
 }
 
@@ -30,7 +30,7 @@ func (s *server) Serve() error {
 	e.HidePort = true
 
 	// Setup custom validator for performing data validation on request payload
-	e.Validator = &CustomValidator{}
+	e.Validator = &utils.CustomValidator{}
 
 	// Middlewares
 	e.Use(middleware.Recover())
@@ -38,7 +38,7 @@ func (s *server) Serve() error {
 		LogURI:    true,
 		LogStatus: true,
 		LogValuesFunc: func(c echo.Context, values middleware.RequestLoggerValues) error {
-			s.Log.WithFields(logrus.Fields{
+			s.log.WithFields(logrus.Fields{
 				"URI":     values.URI,
 				"status":  values.Status,
 				"latency": values.Latency.Milliseconds(),
@@ -50,11 +50,13 @@ func (s *server) Serve() error {
 	}))
 
 	// Initialize Routes
-	s.InitializeUserRoutes(e)
+	s.router.InitializeSwaggerRoutes(e)
+	s.router.InitializeUserRoutes(e)
+	s.router.InitializeChannelRoutes(e)
 
 	// Starting Server
-	s.Log.WithField("port", s.Port).Info("Starting HTTP Server...")
-	err := e.Start(fmt.Sprintf(":%s", s.Port))
+	s.log.WithField("port", s.port).Info("Starting HTTP Server...")
+	err := e.Start(fmt.Sprintf(":%s", s.port))
 	if err != nil {
 		return err
 	}

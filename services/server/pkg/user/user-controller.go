@@ -1,12 +1,12 @@
 package user
 
 import (
+	"server/pkg/database"
 	"server/pkg/models"
 	"server/pkg/user/auth"
 	"time"
 
 	"github.com/sirupsen/logrus"
-	"gorm.io/gorm"
 )
 
 type UserController struct {
@@ -14,7 +14,7 @@ type UserController struct {
 	log  *logrus.Logger
 }
 
-func NewUserController(db *gorm.DB, l *logrus.Logger) *UserController {
+func NewUserController(db *database.Postgres, l *logrus.Logger) *UserController {
 	return &UserController{repo: NewUserRepository(db, l), log: l}
 }
 

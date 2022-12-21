@@ -1,0 +1,115 @@
+definitions:
+  channel.createChannelRequest:
+    properties:
+      channel_name:
+        type: string
+      user_id:
+        type: string
+    required:
+    - channel_name
+    - user_id
+    type: object
+  channel.createChannelResponse:
+    properties:
+      channel_id:
+        type: string
+    type: object
+  user.loginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  user.loginResponse:
+    properties:
+      refresh_token:
+        type: string
+      token:
+        type: string
+      user_id:
+        type: string
+    type: object
+  user.signupRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  user.signupResponse:
+    properties:
+      refresh_token:
+        type: string
+      token:
+        type: string
+      user_id:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /channel/create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Create Channel Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/channel.createChannelRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/channel.createChannelResponse'
+      summary: Create a Channel for a user
+  /user/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Login Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/user.loginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.loginResponse'
+      summary: Logs a user in
+  /user/signup:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Signup Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/user.signupRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.signupResponse'
+      summary: Create a user
+swagger: "2.0"
